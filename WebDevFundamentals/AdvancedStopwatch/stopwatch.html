@@ -13,7 +13,8 @@
   </head>
   <body>
     <div class="text-center">
-      <h1 id="displayText">00:00:00:000</h1>
+      <div class="row"><h1 id="displayText">00:00:00:000</h1></div>
+
       <button class="btn btn-primary" onclick="start()" id="startButton">
         Start
       </button>
@@ -23,6 +24,17 @@
       <button class="btn btn-secondary" onclick="reset()" id="resetButton">
         Reset
       </button>
+
+      <div class="row fixed-bottom">
+        <input
+          type="checkbox"
+          id="cleanMode"
+          name="cleanMode"
+          class="btn-check"
+        /><label class="btn btn-outline-primary" for="cleanMode"
+          >Clean Mode</label
+        >
+      </div>
     </div>
 
     <script

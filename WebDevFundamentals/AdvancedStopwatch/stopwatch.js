@@ -1,11 +1,14 @@
 let [hours, minutes, seconds, ms] = [0, 0, 0, 0];
-
 timer = null;
 timerActive = false;
+
 let display = document.getElementById("displayText");
 let startButton = document.getElementById("startButton");
 let stopButton = document.getElementById("stopButton");
 let resetButton = document.getElementById("resetButton");
+
+let cleanModeSelector = document.getElementById("cleanMode");
+cleanMode = false;
 
 // Key Listeners
 document.addEventListener("keyup", (event) => {
@@ -23,6 +26,28 @@ document.addEventListener("keyup", (event) => {
     reset();
   }
 });
+
+//Clean Mode
+cleanModeSelector.addEventListener("change", function () {
+  if (this.checked) {
+    cleanMode = true;
+  } else {
+    cleanMode = false;
+  }
+  updateScreen();
+});
+
+function cleanUpdateScreen(hours, minutes, seconds, ms) {
+  const displayHours = hours > 0 ? hours + ":" : "";
+  const displayMinutes =
+    minutes > 0
+      ? minutes + ":"
+      : hours > 0
+      ? ("0" + minutes).slice(-2) + ":"
+      : "";
+  const displaySeconds = seconds > 0 ? seconds : "0";
+  return `${displayHours}${displayMinutes}${displaySeconds}`;
+}
 
 // Button Functionality
 function start() {
@@ -60,8 +85,10 @@ function stopwatch() {
     ms -= 1000;
     seconds++;
     if (seconds == 60) {
+      seconds = 0;
       minutes++;
       if (minutes == 60) {
+        hours = 0;
         hours++;
       }
     }
@@ -74,7 +101,9 @@ function updateScreen() {
 }
 
 function formatTime(hours, minutes, seconds, ms) {
-  return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${(
-    "0" + seconds
-  ).slice(-2)}:${("00" + ms).slice(-3)}`;
+  return cleanMode
+    ? cleanUpdateScreen(hours, minutes, seconds, ms)
+    : `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${(
+        "0" + seconds
+      ).slice(-2)}:${("00" + ms).slice(-3)}`;
 }
